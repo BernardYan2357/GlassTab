@@ -41,14 +41,14 @@ GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的�
 
 ## 安装
 
-1. 下载或克隆本仓库
+1. 在 Release 页面下载或克隆本仓库
 2. 打开 Chrome，进入 `chrome://extensions/`
 3. 开启右上角「开发者模式」
 4. 点击「加载已解压的扩展程序」，选择项目文件夹
 
 ## 配置
 
-1. 将 `config.example.js` 复制为 `config.js`
+1. 将 `GlassTab` 目录下的 `config.example.js` 复制为 `config.js`
 2. 填入你的 API Key：
 
 | 配置项 | 说明 | 申请地址 |

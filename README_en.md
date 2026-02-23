@@ -39,14 +39,14 @@ Automatically fetches current weather based on geolocation. Click to expand and 
 
 ## Installation
 
-1. Download or clone this repository
+1. Download or clone this repository from the Release page
 2. Open Chrome and navigate to `chrome://extensions/`
 3. Enable "Developer mode" in the top-right corner
 4. Click "Load unpacked" and select the project folder
 
 ## Configuration
 
-1. Copy `config.example.js` to `config.js`
+1. Copy `config.example.js` in the `GlassTab` directory to `config.js`
 2. Fill in your API keys:
 
 | Key | Description | Get it from |
