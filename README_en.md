@@ -53,8 +53,6 @@ Automatically fetches current weather based on geolocation. Click to expand and 
 | `pexels` | Pexels API Key | [pexels.com/api](https://www.pexels.com/api/) |
 | `imgbb` | imgbb API Key (for reverse image search) | [api.imgbb.com](https://api.imgbb.com/) |
 
-> `config.js` is excluded by `.gitignore` and will not be committed to version control.
-
 ## Credits
 
 - Wallpapers from [Pexels](https://www.pexels.com), [Bing](https://www.bing.com), and [Lorem Picsum](https://picsum.photos)
