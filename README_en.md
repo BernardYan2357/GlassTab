@@ -6,20 +6,24 @@
 
 ## About
 
-GlassTab redefines your new tab page with a frosted glass aesthetic. No clutter, no bloat — just time, search, and weather, Clean, calm.
+GlassTab redefines Edge new tab page with a frosted glass aesthetic. No clutter, no bloat — just time, search, and weather, Clean, calm.
 
 ## Features
 
 ### Minimal Clock
+
 A large centered clock with support for both 24-hour and 12-hour formats.
 
 ### Multi-Engine Search
+
 Built-in support for Bing, Google, DuckDuckGo, Yandex, and TinEye. Switch engines by clicking the icon on the right side of the search bar.
 
 ### Reverse Image Search
+
 Paste an image directly into the search bar (Ctrl+V) to perform a reverse image search. The image is uploaded to a temporary host and forwarded to the selected engine. When using Bing or DuckDuckGo, GlassTab automatically switches to TinEye; Google and Yandex use their native image search.
 
 ### Daily Wallpaper
+
 Three wallpaper sources to choose from:
 - **Pexels** (default) — High-quality photos in categories like landscape, nature, and architecture, with photographer credit displayed in the bottom-left corner
 - **Bing** — Bing's daily wallpaper
@@ -28,6 +32,7 @@ Three wallpaper sources to choose from:
 Supports manual refresh and wallpaper download.
 
 ### Weather
+
 Automatically fetches current weather based on geolocation. Click to expand and view feels-like temperature, rainfall, wind speed, and a 5-day forecast. Manual city switching is supported.
 
 ## Installation
@@ -36,7 +41,6 @@ Automatically fetches current weather based on geolocation. Click to expand and 
 2. Open Chrome and navigate to `chrome://extensions/`
 3. Enable "Developer mode" in the top-right corner
 4. Click "Load unpacked" and select the project folder
-5. Open a new tab to start using GlassTab
 
 ## Configuration
 

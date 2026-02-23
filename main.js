@@ -181,6 +181,31 @@ async function fetchBackground(useRandom = false) {
       const width = 1920;
       const height = 1080;
       const url = `https://picsum.photos/seed/${seed}/${width}/${height}`;
+
+      // 尝试获取 Picsum 图片的作者信息
+      try {
+        const headResp = await fetch(url, { method: 'HEAD', redirect: 'follow' });
+        const finalUrl = headResp.url; // 重定向后的真实 URL，如 https://fastly.picsum.photos/id/123/...
+        const idMatch = finalUrl.match(/\/id\/(\d+)\//);
+        if (idMatch) {
+          const infoResp = await fetch(`https://picsum.photos/id/${idMatch[1]}/info`);
+          if (infoResp.ok) {
+            const info = await infoResp.json();
+            return {
+              url,
+              credit: {
+                photographer: info.author,
+                photographerUrl: info.url,
+                source: 'Picsum',
+                sourceUrl: `https://picsum.photos`
+              }
+            };
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to fetch Picsum author info:', e);
+      }
+
       return { url, credit: null };
     }
   } catch (error) {
@@ -654,6 +679,32 @@ function getGeolocation() {
   );
 }
 
+// 天气开关
+function setWeatherEnabled(enabled) {
+  localStorage.setItem('weatherEnabled', enabled ? 'on' : 'off');
+  const chip = document.getElementById('weatherChip');
+  chip.style.display = enabled ? 'inline-flex' : 'none';
+
+  const options = document.getElementById('weatherToggle').querySelectorAll('.toggle-option');
+  options.forEach(opt => {
+    if ((opt.dataset.weather === 'on') === enabled) {
+      opt.classList.add('active');
+    } else {
+      opt.classList.remove('active');
+    }
+  });
+
+  if (enabled && !weatherTemp.textContent.includes('--') === false) {
+    getGeolocation();
+  }
+}
+
+function initWeatherToggle() {
+  const saved = localStorage.getItem('weatherEnabled');
+  const enabled = saved !== 'off';
+  setWeatherEnabled(enabled);
+}
+
 // 初始化
 (async () => {
   // 不需要提前设置默认背景，CSS 已经定义了
@@ -668,12 +719,16 @@ function getGeolocation() {
 
 initTimeFormat();
 initWallpaperSource();
+initWeatherToggle();
 
 updateClock();
 setInterval(updateClock, 1000);
 setEngine(0);
-getGeolocation();
-setInterval(() => fetchWeather(null, currentCoords), 1000 * 60 * 10);
+
+if (localStorage.getItem('weatherEnabled') !== 'off') {
+  getGeolocation();
+  setInterval(() => fetchWeather(null, currentCoords), 1000 * 60 * 10);
+}
 
 engineBtn.addEventListener("click", cycleEngine);
 
@@ -803,6 +858,14 @@ wallpaperSourceToggle.addEventListener("click", (event) => {
   const option = event.target.closest('.toggle-option');
   if (option) {
     setWallpaperSource(option.dataset.source);
+  }
+});
+
+document.getElementById('weatherToggle').addEventListener("click", (event) => {
+  event.stopPropagation();
+  const option = event.target.closest('.toggle-option');
+  if (option) {
+    setWeatherEnabled(option.dataset.weather === 'on');
   }
 });
 
