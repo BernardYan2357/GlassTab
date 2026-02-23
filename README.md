@@ -4,6 +4,8 @@
 
 ![GlassTab Preview](image/display.png)
 
+English version: [README_en.md](README_en.md)
+
 ## 简介
 
 GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的元素与臃肿的功能，只保留时间、搜索和天气，干净、清爽。
@@ -36,17 +38,17 @@ GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的�
 2. 打开 Chrome，进入 `chrome://extensions/`
 3. 开启右上角「开发者模式」
 4. 点击「加载已解压的扩展程序」，选择项目文件夹
-5. 打开新标签页即可使用
 
 ## 配置
 
-在 `main.js` 顶部的 `CONFIG` 对象中可以修改：
+1. 将 `config.example.js` 复制为 `config.js`
+2. 填入你的 API Key：
 
-| 配置项 | 说明 |
-|-------|------|
-| `weatherApiKay` | OpenWeatherMap API Key |
-| `imgbbApiKey` | imgbb 图床 API Key（以图搜图功能） |
-| `pexelsApiKey` | Pexels API Key |
+| 配置项 | 说明 | 申请地址 |
+|-------|------|----------|
+| `openWeatherMap` | OpenWeatherMap API Key | [openweathermap.org](https://openweathermap.org/api) |
+| `pexels` | Pexels API Key | [pexels.com/api](https://www.pexels.com/api/) |
+| `imgbb` | imgbb 图床 API Key（以图搜图） | [api.imgbb.com](https://api.imgbb.com/) |
 
 ## 致谢
 

@@ -1,10 +1,9 @@
 const CONFIG = {
-  weatherApiKay: "e28d31c5f2ae236d67296da4ccad4556",
+  weatherApiKey: (typeof API_KEYS !== 'undefined' && API_KEYS.openWeatherMap) || "",
   units: "metric",
   defaultBackground: "assets/default_background.jpg",
-  // 免费图床 API key (imgbb.com)，用于临时上传粘贴的图片
-  imgbbApiKey: "00571eb8678b9b07ae419d66a56e6ce1",
-  pexelsApiKey: "pb1wu2OTz7vg3b5f9LBND8NypAzFJPLc5G8O4Fr7fOStDyUawqcQm7lF",
+  imgbbApiKey: (typeof API_KEYS !== 'undefined' && API_KEYS.imgbb) || "",
+  pexelsApiKey: (typeof API_KEYS !== 'undefined' && API_KEYS.pexels) || "",
   engines: [
     {
       name: "Bing",
@@ -445,7 +444,7 @@ function buildWeatherUrl(city) {
   const params = new URLSearchParams({
     q: city,
     units: CONFIG.units,
-    appid: CONFIG.weatherApiKay,
+    appid: CONFIG.weatherApiKey,
     lang: "zh_cn"
   });
   return `https://api.openweathermap.org/data/2.5/weather?${params.toString()}`;
@@ -456,7 +455,7 @@ function buildWeatherUrlByCoords(lat, lon) {
     lat,
     lon,
     units: CONFIG.units,
-    appid: CONFIG.weatherApiKay,
+    appid: CONFIG.weatherApiKey,
     lang: "zh_cn"
   });
   return `https://api.openweathermap.org/data/2.5/weather?${params.toString()}`;
@@ -466,7 +465,7 @@ function buildForecastUrl(city) {
   const params = new URLSearchParams({
     q: city,
     units: CONFIG.units,
-    appid: CONFIG.weatherApiKay,
+    appid: CONFIG.weatherApiKey,
     cnt: 40,
     lang: "zh_cn"
   });
@@ -478,7 +477,7 @@ function buildForecastUrlByCoords(lat, lon) {
     lat,
     lon,
     units: CONFIG.units,
-    appid: CONFIG.weatherApiKay,
+    appid: CONFIG.weatherApiKey,
     cnt: 40,
     lang: "zh_cn"
   });
@@ -486,7 +485,7 @@ function buildForecastUrlByCoords(lat, lon) {
 }
 
 async function fetchForecast(city = null, coords = null) {
-  if (!CONFIG.weatherApiKay || CONFIG.weatherApiKay.includes("REPLACE")) return;
+  if (!CONFIG.weatherApiKey || CONFIG.weatherApiKey.includes("YOUR_")) return;
 
   let url;
   if (coords?.lat && coords?.lon) {
@@ -557,7 +556,7 @@ async function fetchForecast(city = null, coords = null) {
 }
 
 async function fetchWeather(city = null, coords = null) {
-  if (!CONFIG.weatherApiKay || CONFIG.weatherApiKay.includes("REPLACE")) {
+  if (!CONFIG.weatherApiKey || CONFIG.weatherApiKey.includes("YOUR_")) {
     setWeatherFallback();
     return;
   }
@@ -820,8 +819,8 @@ downloadWallpaperBtn.addEventListener("click", (event) => {
 // 图片上传到 imgbb 临时图床，获取公开 URL
 async function uploadImageToImgbb(file) {
   const apiKey = CONFIG.imgbbApiKey;
-  if (!apiKey || apiKey.includes("替换")) {
-    alert("请在 CONFIG.imgbbApiKey 中设置你的 imgbb API Key（免费注册：https://api.imgbb.com/）");
+  if (!apiKey || apiKey.includes("YOUR_")) {
+    alert("Please set your imgbb API Key in config.js (free: https://api.imgbb.com/)");
     return null;
   }
 

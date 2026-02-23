@@ -40,13 +40,16 @@ Automatically fetches current weather based on geolocation. Click to expand and 
 
 ## Configuration
 
-Edit the `CONFIG` object at the top of `main.js`:
+1. Copy `config.example.js` to `config.js`
+2. Fill in your API keys:
 
-| Key | Description |
-|-----|-------------|
-| `weatherApiKay` | OpenWeatherMap API Key |
-| `imgbbApiKey` | imgbb API Key (for reverse image search) |
-| `pexelsApiKey` | Pexels API Key |
+| Key | Description | Get it from |
+|-----|-------------|-------------|
+| `openWeatherMap` | OpenWeatherMap API Key | [openweathermap.org](https://openweathermap.org/api) |
+| `pexels` | Pexels API Key | [pexels.com/api](https://www.pexels.com/api/) |
+| `imgbb` | imgbb API Key (for reverse image search) | [api.imgbb.com](https://api.imgbb.com/) |
+
+> `config.js` is excluded by `.gitignore` and will not be committed to version control.
 
 ## Credits
 
