@@ -28,9 +28,15 @@
           <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
         </svg>
       </div>
-      <input id="searchInput" type="text" placeholder="Search" />
+      <div class="search-input-wrapper" style="display: flex; align-items: center; width: 100%; overflow: hidden;">
+        <div id="imagePreviewContainer" style="display: none; align-items: center; gap: 6px; margin-right: 8px; background: rgba(255,255,255,0.15); padding: 4px 8px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.2);">
+          <img id="imagePreview" src="" alt="Pasted Image" style="height: 20px; width: 20px; border-radius: 4px; object-fit: cover;">
+          <button type="button" id="removeImageBtn" style="background: none; border: none; color: var(--text); cursor: pointer; padding: 0; font-size: 16px; line-height: 1; display: flex; align-items: center; justify-content: center;" aria-label="Remove image">&times;</button>
+        </div>
+        <input id="searchInput" type="text" placeholder="Search, text and image" style="flex: 1; min-width: 0;" />
+      </div>
       <button class="engine" id="engineBtn" type="button" aria-label="Switch search engine">
-        <img class="engine-badge" id="engineBadge" src="https://www.bing.com/favicon.ico" alt="Bing" />
+        <img class="engine-badge" id="engineBadge" src="assets/Bing.ico" alt="Bing" />
       </button>
     </form>
   </main>

@@ -1,27 +1,40 @@
 const CONFIG = {
-  apiKey: "e28d31c5f2ae236d67296da4ccad4556",
+  weatherApiKay: "e28d31c5f2ae236d67296da4ccad4556",
   units: "metric",
   defaultBackground: "assets/default_background.jpg",
+  // 免费图床 API key (imgbb.com)，用于临时上传粘贴的图片
+  imgbbApiKey: "00571eb8678b9b07ae419d66a56e6ce1",
   engines: [
     {
       name: "Bing",
-      icon: "https://www.bing.com/favicon.ico",
+      icon: "assets/Bing.ico",
       url: "https://www.bing.com/search?q="
     },
     {
       name: "Google",
-      icon: "https://www.google.com/favicon.ico",
-      url: "https://www.google.com/search?q="
+      icon: "assets/Google.ico",
+      url: "https://www.google.com/search?q=",
+      imageSearchUrl: "https://lens.google.com/uploadbyurl?url=",
+      supportsUrlSearch: true
     },
     {
       name: "DuckDuckGo",
-      icon: "https://duckduckgo.com/favicon.ico",
+      icon: "assets/DuckDuckGo.ico",
       url: "https://duckduckgo.com/?q="
     },
     {
       name: "Yandex",
-      icon: "https://yandex.com/favicon.ico",
-      url: "https://yandex.com/search/?text="
+      icon: "assets/Yandex.ico",
+      url: "https://yandex.com/search/?text=",
+      imageSearchUrl: "https://yandex.com/images/search?rpt=imageview&url=",
+      supportsUrlSearch: true
+    },
+    {
+      name: "TinEye",
+      icon: "assets/Tineye.ico",
+      url: "https://tineye.com/search/?url=",
+      imageSearchUrl: "https://tineye.com/search/?url=",
+      supportsUrlSearch: true
     }
   ]
 };
@@ -138,15 +151,12 @@ async function updateDailyBackground() {
           bgElement.style.backgroundImage = `url("${backgroundUrl}")`;
         } else {
           console.warn('Failed to load background image, keeping default');
-          // 不更新样式，保持 CSS 中的默认背景
         }
       } catch (error) {
         console.warn('Error loading background, keeping default:', error);
-        // 不更新样式，保持 CSS 中的默认背景
       }
     } else {
       console.warn('Failed to fetch background URL, keeping default');
-      // 不更新样式，保持 CSS 中的默认背景
     }
   } else {
     // 使用缓存的背景
@@ -177,7 +187,6 @@ function toggleSettings() {
 
 function setTimeFormat(format) {
   localStorage.setItem('timeFormat', format);
-  
   // 更新切换按钮状态
   const options = timeFormatToggle.querySelectorAll('.toggle-option');
   options.forEach(opt => {
@@ -209,7 +218,6 @@ function updateChangeWallpaperButtonState() {
 function setWallpaperSource(source) {
   currentWallpaperSource = source;
   localStorage.setItem('wallpaperSource', source);
-  
   // 更新切换按钮状态
   const options = wallpaperSourceToggle.querySelectorAll('.toggle-option');
   options.forEach(opt => {
@@ -221,10 +229,8 @@ function setWallpaperSource(source) {
   });
 
   updateChangeWallpaperButtonState();
-  
   // 清除缓存的壁纸以便重新获取
   localStorage.removeItem('dailyBackground');
-  
   // 立即更新壁纸
   updateDailyBackground();
 }
@@ -232,7 +238,6 @@ function setWallpaperSource(source) {
 function initWallpaperSource() {
   const savedSource = localStorage.getItem('wallpaperSource') || 'picsum';
   currentWallpaperSource = savedSource;
-  
   // 更新切换按钮状态（不立即改变壁纸）
   const options = wallpaperSourceToggle.querySelectorAll('.toggle-option');
   options.forEach(opt => {
@@ -248,13 +253,11 @@ function initWallpaperSource() {
 
 async function manualChangeWallpaper() {
   if (currentWallpaperSource === 'bing') return;
-  
   const width = 1920;
   const height = 1080;
   // 生成一个新的随机 seed 以强制获取新图片
   const seed = Date.now();
   const backgroundUrl = `https://picsum.photos/seed/${seed}/${width}/${height}`;
-  
   if (backgroundUrl) {
     // 测试图片是否能加载
     const loaded = await testImageLoad(backgroundUrl);
@@ -269,7 +272,6 @@ async function manualChangeWallpaper() {
     console.warn('Failed to fetch background image');
     alert('Failed to load new wallpaper. Please try again later.');
   }
-  
   toggleSettings();
 }
 
@@ -277,30 +279,24 @@ async function downloadWallpaper() {
   try {
     const bgElement = document.querySelector('.bg');
     const bgImageUrl = bgElement.style.backgroundImage;
-    
     if (!bgImageUrl || bgImageUrl === 'none') {
       alert('No wallpaper to download. Please wait for the wallpaper to load.');
       return;
     }
-    
     // 提取 URL 从 url("...") 格式
     const urlMatch = bgImageUrl.match(/url\(["']?([^"'()]+)["']?\)/);
     if (!urlMatch || !urlMatch[1]) {
       alert('Unable to extract wallpaper URL.');
       return;
     }
-    
     const imageUrl = urlMatch[1];
-    
     // 使用 fetch 获取图片
     const response = await fetch(imageUrl);
     if (!response.ok) {
       throw new Error(`Failed to fetch image: ${response.status}`);
     }
-    
     const blob = await response.blob();
     const blobUrl = URL.createObjectURL(blob);
-    
     // 创建下载链接
     const link = document.createElement('a');
     link.href = blobUrl;
@@ -309,7 +305,6 @@ async function downloadWallpaper() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(blobUrl);
-    
     toggleSettings();
   } catch (error) {
     console.error('Download error:', error);
@@ -360,7 +355,7 @@ function buildWeatherUrl(city) {
   const params = new URLSearchParams({
     q: city,
     units: CONFIG.units,
-    appid: CONFIG.apiKey,
+    appid: CONFIG.weatherApiKay,
     lang: "zh_cn"
   });
   return `https://api.openweathermap.org/data/2.5/weather?${params.toString()}`;
@@ -371,7 +366,7 @@ function buildWeatherUrlByCoords(lat, lon) {
     lat,
     lon,
     units: CONFIG.units,
-    appid: CONFIG.apiKey,
+    appid: CONFIG.weatherApiKay,
     lang: "zh_cn"
   });
   return `https://api.openweathermap.org/data/2.5/weather?${params.toString()}`;
@@ -381,7 +376,7 @@ function buildForecastUrl(city) {
   const params = new URLSearchParams({
     q: city,
     units: CONFIG.units,
-    appid: CONFIG.apiKey,
+    appid: CONFIG.weatherApiKay,
     cnt: 40,
     lang: "zh_cn"
   });
@@ -393,7 +388,7 @@ function buildForecastUrlByCoords(lat, lon) {
     lat,
     lon,
     units: CONFIG.units,
-    appid: CONFIG.apiKey,
+    appid: CONFIG.weatherApiKay,
     cnt: 40,
     lang: "zh_cn"
   });
@@ -401,7 +396,7 @@ function buildForecastUrlByCoords(lat, lon) {
 }
 
 async function fetchForecast(city = null, coords = null) {
-  if (!CONFIG.apiKey || CONFIG.apiKey.includes("REPLACE")) return;
+  if (!CONFIG.weatherApiKay || CONFIG.weatherApiKay.includes("REPLACE")) return;
 
   let url;
   if (coords?.lat && coords?.lon) {
@@ -472,7 +467,7 @@ async function fetchForecast(city = null, coords = null) {
 }
 
 async function fetchWeather(city = null, coords = null) {
-  if (!CONFIG.apiKey || CONFIG.apiKey.includes("REPLACE")) {
+  if (!CONFIG.weatherApiKay || CONFIG.weatherApiKay.includes("REPLACE")) {
     setWeatherFallback();
     return;
   }
@@ -593,14 +588,82 @@ setInterval(() => fetchWeather(null, currentCoords), 1000 * 60 * 10);
 
 engineBtn.addEventListener("click", cycleEngine);
 
-searchForm.addEventListener("submit", (event) => {
+let pastedImageFile = null;
+
+searchInput.addEventListener('paste', (e) => {
+  const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+  for (let index in items) {
+    const item = items[index];
+    if (item.kind === 'file' && item.type.startsWith('image/')) {
+      const blob = item.getAsFile();
+      pastedImageFile = blob;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        document.getElementById('imagePreview').src = event.target.result;
+        document.getElementById('imagePreviewContainer').style.display = 'flex';
+      };
+      reader.readAsDataURL(blob);
+      
+      const currentEngineName = CONFIG.engines[currentEngine].name;
+      if (currentEngineName === 'Bing' || currentEngineName === 'DuckDuckGo') {
+        const tineyeIndex = CONFIG.engines.findIndex(e => e.name === 'TinEye');
+        if (tineyeIndex !== -1) {
+          setEngine(tineyeIndex);
+        }
+      }
+      e.preventDefault();
+      break;
+    }
+  }
+});
+
+document.getElementById('removeImageBtn').addEventListener('click', () => {
+  pastedImageFile = null;
+  document.getElementById('imagePreviewContainer').style.display = 'none';
+  document.getElementById('imagePreview').src = '';
+  searchInput.placeholder = "Search, text and image";
+});
+
+searchForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const query = searchInput.value.trim();
-  if (!query) {
-    return;
-  }
   const engine = CONFIG.engines[currentEngine];
-  window.location.href = `${engine.url}${encodeURIComponent(query)}`;
+
+  if (pastedImageFile) {
+    // 以图搜图模式
+    // 显示上传中提示
+    searchInput.placeholder = "Uploading image...";
+    searchInput.disabled = true;
+
+    const imageUrl = await uploadImageToImgbb(pastedImageFile);
+
+    searchInput.disabled = false;
+    searchInput.placeholder = "Search, text and image";
+
+    if (!imageUrl) {
+      alert("Image upload failed, please try again.");
+      return;
+    }
+
+    // 使用 URL 方式调用搜索引擎
+    if (engine.supportsUrlSearch && engine.imageSearchUrl) {
+      window.open(engine.imageSearchUrl + encodeURIComponent(imageUrl), "_blank");
+    } else {
+      // Bing / DuckDuckGo 等不支持以图搜图的引擎，fallback 到 TinEye
+      const tineye = CONFIG.engines.find(e => e.name === "TinEye");
+      if (tineye) {
+        window.open(tineye.imageSearchUrl + encodeURIComponent(imageUrl), "_blank");
+      }
+    }
+
+    // 清除已粘贴的图片
+    pastedImageFile = null;
+    document.getElementById('imagePreviewContainer').style.display = 'none';
+    document.getElementById('imagePreview').src = '';
+  } else if (query) {
+    window.location.href = engine.url + encodeURIComponent(query);
+  }
 });
 
 weatherChip.addEventListener("click", showModal);
@@ -663,6 +726,52 @@ downloadWallpaperBtn.addEventListener("click", (event) => {
   event.stopPropagation();
   downloadWallpaper();
 });
+
+// 图片上传到 imgbb 临时图床，获取公开 URL
+async function uploadImageToImgbb(file) {
+  const apiKey = CONFIG.imgbbApiKey;
+  if (!apiKey || apiKey.includes("替换")) {
+    alert("请在 CONFIG.imgbbApiKey 中设置你的 imgbb API Key（免费注册：https://api.imgbb.com/）");
+    return null;
+  }
+
+  const formData = new FormData();
+  // imgbb 要求 base64 或 file
+  const base64 = await fileToBase64(file);
+  formData.append("key", apiKey);
+  formData.append("image", base64);
+  formData.append("expiration", 600); // 10分钟后自动过期
+
+  try {
+    const resp = await fetch("https://api.imgbb.com/1/upload", {
+      method: "POST",
+      body: formData
+    });
+    const data = await resp.json();
+    if (data.success) {
+      return data.data.url;
+    } else {
+      console.error("imgbb upload failed:", data);
+      return null;
+    }
+  } catch (e) {
+    console.error("imgbb upload error:", e);
+    return null;
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      // 去掉 data:image/png;base64, 前缀
+      const base64 = reader.result.split(",")[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 // 点击设置菜单外部关闭菜单
 document.addEventListener("click", (event) => {
