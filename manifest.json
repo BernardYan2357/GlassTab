@@ -1,7 +1,7 @@
 ﻿{
   "manifest_version": 3,
   "name": "GlassTab",
-  "version": "0.5",
+  "version": "0.6",
   "description": "A beautiful new tab with frosted glass design, featuring weather, search (text and image), and daily wallpapers.",
   "permissions": [
     "geolocation"
@@ -9,7 +9,8 @@
   "host_permissions": [
     "https://picsum.photos/*",
     "https://www.bing.com/*",
-    "https://api.imgbb.com/*"
+    "https://api.imgbb.com/*",
+    "https://api.pexels.com/*"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"

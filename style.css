@@ -492,6 +492,34 @@ body {
   cursor: not-allowed;
 }
 
+.photo-credit {
+  position: absolute;
+  bottom: 4px;
+  left: 54px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: rgba(243, 246, 251, 0.5);
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+}
+
+.photo-credit a {
+  color: rgba(243, 246, 251, 0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.photo-credit a:hover {
+  color: rgba(243, 246, 251, 0.9);
+  text-decoration: underline;
+}
+
+.credit-source {
+  color: rgba(243, 246, 251, 0.4);
+}
+
 @media (max-width: 640px) {
   .topbar {
     padding: 18px 18px;
@@ -535,5 +563,10 @@ body {
   .settings-btn {
     width: 40px;
     height: 40px;
+  }
+
+  .photo-credit {
+    left: 48px;
+    font-size: 11px;
   }
 }

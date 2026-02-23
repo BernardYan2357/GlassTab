@@ -4,6 +4,7 @@ const CONFIG = {
   defaultBackground: "assets/default_background.jpg",
   // 免费图床 API key (imgbb.com)，用于临时上传粘贴的图片
   imgbbApiKey: "00571eb8678b9b07ae419d66a56e6ce1",
+  pexelsApiKey: "pb1wu2OTz7vg3b5f9LBND8NypAzFJPLc5G8O4Fr7fOStDyUawqcQm7lF",
   engines: [
     {
       name: "Bing",
@@ -67,7 +68,7 @@ const downloadWallpaperBtn = document.getElementById("downloadWallpaper");
 let currentEngine = 0;
 let currentCity = "Suzhou";
 let currentCoords = null;
-let currentWallpaperSource = localStorage.getItem('wallpaperSource') || 'picsum';
+let currentWallpaperSource = localStorage.getItem('wallpaperSource') || 'pexels';
 
 // 背景管理
 function getTodayDateString() {
@@ -87,12 +88,42 @@ function getBackgroundFromStorage() {
   }
 }
 
-function saveBackgroundToStorage(url) {
+function saveBackgroundToStorage(url, credit = null) {
   const data = {
     url,
-    date: getTodayDateString()
+    date: getTodayDateString(),
+    credit
   };
   localStorage.setItem('dailyBackground', JSON.stringify(data));
+}
+
+function getCreditFromStorage() {
+  const stored = localStorage.getItem('dailyBackground');
+  if (!stored) return null;
+  try {
+    const data = JSON.parse(stored);
+    return data.date === getTodayDateString() ? (data.credit || null) : null;
+  } catch {
+    return null;
+  }
+}
+
+function updatePhotoCredit(credit) {
+  const creditEl = document.getElementById('photoCredit');
+  const creditText = document.getElementById('photoCreditText');
+  const creditLink = document.getElementById('photoCreditLink');
+  const creditSourceLink = document.getElementById('creditSourceLink');
+
+  if (!credit) {
+    creditEl.style.display = 'none';
+    return;
+  }
+
+  creditText.textContent = credit.photographer;
+  creditLink.href = credit.photographerUrl || '#';
+  creditSourceLink.textContent = credit.source || 'Pexels';
+  creditSourceLink.href = credit.sourceUrl || 'https://www.pexels.com';
+  creditEl.style.display = 'flex';
 }
 
 async function fetchBackground(useRandom = false) {
@@ -106,16 +137,52 @@ async function fetchBackground(useRandom = false) {
       if (!response.ok) throw new Error('Bing API error');
       const data = await response.json();
       if (data.images && data.images.length > 0) {
-        return `https://www.bing.com${data.images[0].url}`;
+        return {
+          url: `https://www.bing.com${data.images[0].url}`,
+          credit: {
+            photographer: data.images[0].copyright || 'Bing',
+            photographerUrl: `https://www.bing.com${data.images[0].copyrightlink || ''}`,
+            source: 'Bing',
+            sourceUrl: 'https://www.bing.com'
+          }
+        };
+      }
+      return null;
+    } else if (source === 'pexels') {
+      // 使用 Pexels API
+      const queries = ['landscape', 'nature', 'architecture', 'city', 'mountain', 'ocean', 'forest', 'sunset'];
+      const query = queries[Math.floor((useRandom ? Math.random() * queries.length : new Date().getDate()) % queries.length)];
+      const page = useRandom ? Math.floor(Math.random() * 10) + 1 : 1;
+
+      const response = await fetch(
+        `https://api.pexels.com/v1/search?query=${query}&orientation=landscape&size=large&per_page=15&page=${page}`,
+        { headers: { Authorization: CONFIG.pexelsApiKey } }
+      );
+      if (!response.ok) throw new Error('Pexels API error');
+      const data = await response.json();
+
+      if (data.photos && data.photos.length > 0) {
+        const index = useRandom
+          ? Math.floor(Math.random() * data.photos.length)
+          : new Date().getDate() % data.photos.length;
+        const photo = data.photos[index];
+        return {
+          url: photo.src.landscape || photo.src.original,
+          credit: {
+            photographer: photo.photographer,
+            photographerUrl: photo.photographer_url,
+            source: 'Pexels',
+            sourceUrl: photo.url
+          }
+        };
       }
       return null;
     } else {
       // 默认使用 Lorem Picsum
       const width = 1920;
       const height = 1080;
-      // 使用 seed 确保每次获取的图片固定，且下载时能获取到同一张
       const url = `https://picsum.photos/seed/${seed}/${width}/${height}`;
-      return url;
+      return { url, credit: null };
     }
   } catch (error) {
     console.error('Failed to generate background URL:', error);
@@ -137,30 +204,36 @@ async function updateDailyBackground() {
   
   // 检查缓存
   let backgroundUrl = getBackgroundFromStorage();
+  let credit = getCreditFromStorage();
   
   if (!backgroundUrl) {
     // 今天还没有背景，尝试获取新的
-    backgroundUrl = await fetchBackground();
+    const result = await fetchBackground();
     
-    if (backgroundUrl) {
+    if (result) {
       // 测试图片是否能加载
       try {
-        const loaded = await testImageLoad(backgroundUrl);
+        const loaded = await testImageLoad(result.url);
         if (loaded) {
-          saveBackgroundToStorage(backgroundUrl);
-          bgElement.style.backgroundImage = `url("${backgroundUrl}")`;
+          saveBackgroundToStorage(result.url, result.credit);
+          bgElement.style.backgroundImage = `url("${result.url}")`;
+          updatePhotoCredit(result.credit);
         } else {
           console.warn('Failed to load background image, keeping default');
+          updatePhotoCredit(null);
         }
       } catch (error) {
         console.warn('Error loading background, keeping default:', error);
+        updatePhotoCredit(null);
       }
     } else {
       console.warn('Failed to fetch background URL, keeping default');
+      updatePhotoCredit(null);
     }
   } else {
     // 使用缓存的背景
     bgElement.style.backgroundImage = `url("${backgroundUrl}")`;
+    updatePhotoCredit(credit);
   }
 }
 
@@ -236,7 +309,7 @@ function setWallpaperSource(source) {
 }
 
 function initWallpaperSource() {
-  const savedSource = localStorage.getItem('wallpaperSource') || 'picsum';
+  const savedSource = localStorage.getItem('wallpaperSource') || 'pexels';
   currentWallpaperSource = savedSource;
   // 更新切换按钮状态（不立即改变壁纸）
   const options = wallpaperSourceToggle.querySelectorAll('.toggle-option');
@@ -253,17 +326,34 @@ function initWallpaperSource() {
 
 async function manualChangeWallpaper() {
   if (currentWallpaperSource === 'bing') return;
+
+  if (currentWallpaperSource === 'pexels') {
+    const result = await fetchBackground(true);
+    if (result) {
+      const loaded = await testImageLoad(result.url);
+      if (loaded) {
+        saveBackgroundToStorage(result.url, result.credit);
+        document.querySelector('.bg').style.backgroundImage = `url("${result.url}")`;
+        updatePhotoCredit(result.credit);
+      } else {
+        alert('Failed to load new wallpaper. Please try again later.');
+      }
+    }
+    toggleSettings();
+    return;
+  }
+
+  // Picsum
   const width = 1920;
   const height = 1080;
-  // 生成一个新的随机 seed 以强制获取新图片
   const seed = Date.now();
   const backgroundUrl = `https://picsum.photos/seed/${seed}/${width}/${height}`;
   if (backgroundUrl) {
-    // 测试图片是否能加载
     const loaded = await testImageLoad(backgroundUrl);
     if (loaded) {
-      saveBackgroundToStorage(backgroundUrl);
+      saveBackgroundToStorage(backgroundUrl, null);
       document.querySelector('.bg').style.backgroundImage = `url("${backgroundUrl}")`;
+      updatePhotoCredit(null);
     } else {
       console.warn('Failed to load background image');
       alert('Failed to load new wallpaper. Please try again later.');
