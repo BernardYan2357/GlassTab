@@ -1,5 +1,7 @@
 # GlassTab
 
+<img src="image/icon.png" alt="GlassTab" style="width: 128px; height: 128px;">
+
 > A minimal Chrome new tab extension.
 
 ![GlassTab Preview](image/display.png)

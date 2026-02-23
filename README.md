@@ -1,5 +1,7 @@
 # GlassTab
 
+<img src="image/icon.png" alt="GlassTab" style="width: 128px; height: 128px;">
+
 > 极简的 Chrome 新标签页扩展。
 
 ![GlassTab Preview](image/display.png)
