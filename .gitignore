@@ -1,2 +1,16 @@
 # API keys (real config)
 config.js
+
+# Build outputs
+dist/
+*.zip
+
+# Dependencies
+node_modules/
+
+# System
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
