@@ -14,11 +14,48 @@ function cycleEngine() {
   setEngine(currentEngine + 1);
 }
 
+function setEngineByName(name) {
+  const idx = CONFIG.engines.findIndex(e => e.name === name);
+  if (idx !== -1) setEngine(idx);
+}
+
+// 获取支持图搜的引擎名列表
+function getImageEngineNames() {
+  return ['Google', 'Yandex', 'TinEye'];
+}
+
+// 检查 imgbb API 是否可用
+function isImgbbAvailable() {
+  return CONFIG.imgbbApiKey && !CONFIG.imgbbApiKey.includes("YOUR_");
+}
+
+// 无 imgbb 时，通过表单 POST 直接上传到 Google Lens
+function searchGoogleLensDirect(file) {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.enctype = 'multipart/form-data';
+  form.action = 'https://lens.google.com/v3/upload';
+  form.target = '_blank';
+  form.style.display = 'none';
+
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.name = 'encoded_image';
+
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  input.files = dt.files;
+
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+}
+
 // 图片上传到 imgbb 临时图床，获取公开 URL
 async function uploadImageToImgbb(file) {
   const apiKey = CONFIG.imgbbApiKey;
   if (!apiKey || apiKey.includes("YOUR_")) {
-    alert("Please set your imgbb API Key in config.js (free: https://api.imgbb.com/)");
     return null;
   }
 

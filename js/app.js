@@ -20,8 +20,9 @@ initWeatherToggle();
 updateClock();
 setInterval(updateClock, 1000);
 
-// 搜索引擎
-setEngine(0);
+// 搜索引擎 & 图搜引擎
+initDefaultSearchEngine();
+initDefaultImageEngine();
 
 // 天气定时刷新
 if (localStorage.getItem('weatherEnabled') !== 'off') {
@@ -50,13 +51,8 @@ searchInput.addEventListener('paste', (e) => {
       };
       reader.readAsDataURL(blob);
 
-      const currentEngineName = CONFIG.engines[currentEngine].name;
-      if (currentEngineName === 'Bing' || currentEngineName === 'DuckDuckGo') {
-        const tineyeIndex = CONFIG.engines.findIndex(eng => eng.name === 'TinEye');
-        if (tineyeIndex !== -1) {
-          setEngine(tineyeIndex);
-        }
-      }
+      // 粘贴图片时切换为图搜引擎
+      setEngineByName(currentImageEngine);
       e.preventDefault();
       break;
     }
@@ -69,6 +65,9 @@ document.getElementById('removeImageBtn').addEventListener('click', () => {
   document.getElementById('imagePreviewContainer').style.display = 'none';
   document.getElementById('imagePreview').src = '';
   searchInput.placeholder = "Search, text and image";
+  // 恢复默认搜索引擎
+  const savedEngine = localStorage.getItem('defaultSearchEngine') || 'Bing';
+  setEngineByName(savedEngine);
 });
 
 // 搜索表单提交
@@ -78,31 +77,44 @@ searchForm.addEventListener("submit", async (event) => {
   const engine = CONFIG.engines[currentEngine];
 
   if (pastedImageFile) {
-    searchInput.placeholder = "Uploading image...";
-    searchInput.disabled = true;
+    // 使用设置中的默认图搜引擎
+    const imgEngine = CONFIG.engines.find(eng => eng.name === currentImageEngine);
 
-    const imageUrl = await uploadImageToImgbb(pastedImageFile);
+    if (isImgbbAvailable() && imgEngine && imgEngine.supportsUrlSearch) {
+      // ---- 有 imgbb：上传获取公网 URL，用 URL 搜索 ----
+      searchInput.placeholder = "Uploading image...";
+      searchInput.disabled = true;
 
-    searchInput.disabled = false;
-    searchInput.placeholder = "Search, text and image";
+      const imageUrl = await uploadImageToImgbb(pastedImageFile);
 
-    if (!imageUrl) {
-      alert("Image upload failed, please try again.");
-      return;
-    }
+      searchInput.disabled = false;
+      searchInput.placeholder = "Search, text and image";
 
-    if (engine.supportsUrlSearch && engine.imageSearchUrl) {
-      window.open(engine.imageSearchUrl + encodeURIComponent(imageUrl), "_blank");
+      if (!imageUrl) {
+        alert("Image upload failed, please try again.");
+        return;
+      }
+
+      window.open(imgEngine.imageSearchUrl + encodeURIComponent(imageUrl), "_blank");
     } else {
-      const tineye = CONFIG.engines.find(eng => eng.name === "TinEye");
-      if (tineye) {
-        window.open(tineye.imageSearchUrl + encodeURIComponent(imageUrl), "_blank");
+      // ---- 无 imgbb：降级处理 ----
+      if (currentImageEngine === 'Google') {
+        searchGoogleLensDirect(pastedImageFile);
+      } else if (currentImageEngine === 'Yandex') {
+        window.open('https://yandex.ru/images/', '_blank');
+      } else if (currentImageEngine === 'TinEye') {
+        window.open('https://tineye.com/', '_blank');
+      } else {
+        searchGoogleLensDirect(pastedImageFile);
       }
     }
 
     pastedImageFile = null;
     document.getElementById('imagePreviewContainer').style.display = 'none';
     document.getElementById('imagePreview').src = '';
+    // 恢复默认搜索引擎
+    const savedEngine = localStorage.getItem('defaultSearchEngine') || 'Bing';
+    setEngineByName(savedEngine);
   } else if (query) {
     window.location.href = engine.url + encodeURIComponent(query);
   }
@@ -158,6 +170,22 @@ wallpaperSourceToggle.addEventListener("click", (event) => {
   const option = event.target.closest('.toggle-option');
   if (option) {
     setWallpaperSource(option.dataset.source);
+  }
+});
+
+searchEngineToggle.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const option = event.target.closest('.toggle-option');
+  if (option) {
+    setDefaultSearchEngine(option.dataset.engine);
+  }
+});
+
+imageEngineToggle.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const option = event.target.closest('.toggle-option');
+  if (option) {
+    setDefaultImageEngine(option.dataset.imgengine);
   }
 });
 

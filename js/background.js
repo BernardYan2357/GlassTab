@@ -107,6 +107,10 @@ async function fetchBackground(useRandom = false) {
       }
       return null;
     } else if (source === "pexels") {
+      // Pexels API key 未配置时，直接返回 null（使用默认背景）
+      if (!CONFIG.pexelsApiKey || CONFIG.pexelsApiKey.includes("YOUR_")) {
+        return null;
+      }
       const queries = ['landscape', 'nature', 'architecture', 'city', 'mountain', 'ocean', 'forest', 'sunset'];
       const query = queries[Math.floor((useRandom ? Math.random() * queries.length : new Date().getDate()) % queries.length)];
       const page = useRandom ? Math.floor(Math.random() * 10) + 1 : 1;

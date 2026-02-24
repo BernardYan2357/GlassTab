@@ -61,6 +61,10 @@ GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的�
 | `pexels` | Pexels API Key | [pexels.com/api](https://www.pexels.com/api/) |
 | `imgbb` | imgbb 图床 API Key（以图搜图） | [api.imgbb.com](https://api.imgbb.com/) |
 
+> 天气 API 可以不配置，天气显示可以在设置中关闭
+> pexels API 也可以不配置，未配置时将使用默认的背景，设置中选择其它源以获得每日壁纸功能
+> imgbb API 为可选项，不配置时以图搜图功能将默认使用谷歌图片搜索，此时若选择 yandex 或 Tineye，将自动跳转至对应网站
+
 ## 致谢
 
 - 壁纸来自 [Pexels](https://www.pexels.com)、[Bing](https://www.bing.com)、[Lorem Picsum](https://picsum.photos)

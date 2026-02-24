@@ -422,7 +422,7 @@ body {
   position: absolute;
   bottom: 54px;
   left: 0;
-  min-width: 240px;
+  min-width: 280px;
   padding: 12px;
   border-radius: 16px;
   display: flex;
@@ -466,6 +466,13 @@ body {
 .toggle-option.active {
   background: rgba(255, 255, 255, 0.15);
   color: var(--text);
+}
+
+.toggle-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
 }
 
 .settings-action {

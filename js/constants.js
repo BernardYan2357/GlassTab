@@ -30,7 +30,7 @@ const CONFIG = {
       name: "Yandex",
       icon: "assets/Yandex.ico",
       url: "https://yandex.com/search/?text=",
-      imageSearchUrl: "https://yandex.com/images/search?rpt=imageview&url=",
+      imageSearchUrl: "https://yandex.ru/images/search?rpt=imageview&url=",
       supportsUrlSearch: true
     },
     {
@@ -68,8 +68,12 @@ const wallpaperSourceToggle = document.getElementById("wallpaperSourceToggle");
 const changeWallpaperBtn = document.getElementById("changeWallpaper");
 const downloadWallpaperBtn = document.getElementById("downloadWallpaper");
 
+const searchEngineToggle = document.getElementById('searchEngineToggle');
+const imageEngineToggle = document.getElementById('imageEngineToggle');
+
 // 共享状态
 let currentEngine = 0;
+let currentImageEngine = 'Google'; // 默认图搜引擎名
 let currentCity = "Suzhou";
 let currentCoords = null;
 let currentWallpaperSource = localStorage.getItem('wallpaperSource') || 'pexels';

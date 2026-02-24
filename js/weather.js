@@ -248,7 +248,6 @@ function setWeatherEnabled(enabled) {
     }
   });
 
-  // [BUG FIX] 原代码: !x === false 逻辑混乱，简化为清晰表达
   if (enabled && weatherTemp.textContent.includes('--')) {
     getGeolocation();
   }
