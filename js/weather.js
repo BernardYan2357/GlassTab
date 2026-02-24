@@ -186,6 +186,10 @@ function showModal() {
 }
 
 function hideModal() {
+  // 先移除焦点，避免 aria-hidden 与聚焦元素冲突
+  if (weatherModal.contains(document.activeElement)) {
+    document.activeElement.blur();
+  }
   weatherModal.classList.remove("show");
   weatherModal.setAttribute("aria-hidden", "true");
 }
