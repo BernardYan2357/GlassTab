@@ -5,7 +5,7 @@ A minimal Chrome new tab extension
   
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://chrome.google.com/webstore)
 [![CC BY-NC 4.0](https://img.shields.io/badge/CC%20BY--NC%204.0-lightgrey?style=for-the-badge&logo=creativecommons)](https://creativecommons.org/licenses/by-nc/4.0/)
-[![Version](https://img.shields.io/badge/Version-1.1.1-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
+[![Version](https://img.shields.io/badge/Version-1.2.0-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
 </div>
 
 ![GlassTab Preview](image/display.png)
@@ -48,6 +48,7 @@ Automatically fetches current weather based on geolocation. Click to expand and 
 ### Settings Panel
 
 Click the settings gear icon in the bottom-left corner to configure:
+- **Bilingual Support** — Chinese / English
 - **Time Format** — 24-hour / 12-hour
 - **Weather** — On / Off
 - **Default Search Engine** — Bing / Google / DuckDuckGo / Yandex (shown as icons)

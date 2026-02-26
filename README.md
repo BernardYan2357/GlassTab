@@ -5,7 +5,7 @@
   
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://chrome.google.com/webstore)
 [![CC BY-NC 4.0](https://img.shields.io/badge/CC%20BY--NC%204.0-lightgrey?style=for-the-badge&logo=creativecommons)](https://creativecommons.org/licenses/by-nc/4.0/)
-[![Version](https://img.shields.io/badge/Version-1.1.1-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
+[![Version](https://img.shields.io/badge/Version-1.2.0-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
 </div>
 
 ![GlassTab Preview](image/display.png)
@@ -48,6 +48,7 @@ GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的�
 ### 设置面板
 
 点击左下角设置按钮，可配置：
+- **双语支持** — 中文 / 英文
 - **时间格式** — 24 小时制 / 12 小时制
 - **天气** — 开启 / 关闭
 - **默认搜索引擎** — Bing / Google / DuckDuckGo / Yandex
