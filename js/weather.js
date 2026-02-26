@@ -10,12 +10,16 @@ function formatTemp(value) {
 }
 
 function setWeatherFallback() {
-  weatherTemp.textContent = "--°";
+  weatherTemp.textContent = "--\u00b0";
   weatherCity.textContent = currentCity;
-  weatherDesc.textContent = "Awaiting data";
-  weatherBig.textContent = "--°";
-  weatherIcon.textContent = "☁";
+  weatherDesc.textContent = t("weather.awaiting");
+  weatherBig.textContent = "--\u00b0";
+  weatherIcon.textContent = "\u2601";
   weatherNote.style.display = "block";
+}
+
+function getApiLang() {
+  return currentLang === "zh" ? "zh_cn" : "en";
 }
 
 function buildWeatherUrl(city) {
@@ -23,7 +27,7 @@ function buildWeatherUrl(city) {
     q: city,
     units: CONFIG.units,
     appid: CONFIG.weatherApiKey,
-    lang: "zh_cn"
+    lang: getApiLang()
   });
   return `https://api.openweathermap.org/data/2.5/weather?${params.toString()}`;
 }
@@ -34,7 +38,7 @@ function buildWeatherUrlByCoords(lat, lon) {
     lon,
     units: CONFIG.units,
     appid: CONFIG.weatherApiKey,
-    lang: "zh_cn"
+    lang: getApiLang()
   });
   return `https://api.openweathermap.org/data/2.5/weather?${params.toString()}`;
 }
@@ -45,7 +49,7 @@ function buildForecastUrl(city) {
     units: CONFIG.units,
     appid: CONFIG.weatherApiKey,
     cnt: 40,
-    lang: "zh_cn"
+    lang: getApiLang()
   });
   return `https://api.openweathermap.org/data/2.5/forecast?${params.toString()}`;
 }
@@ -57,7 +61,7 @@ function buildForecastUrlByCoords(lat, lon) {
     units: CONFIG.units,
     appid: CONFIG.weatherApiKey,
     cnt: 40,
-    lang: "zh_cn"
+    lang: getApiLang()
   });
   return `https://api.openweathermap.org/data/2.5/forecast?${params.toString()}`;
 }
@@ -91,7 +95,7 @@ async function fetchForecast(city = null, coords = null) {
 
     const dailyData = {};
     data.list.forEach(item => {
-      const date = new Date(item.dt * 1000).toLocaleDateString();
+      const date = new Date(item.dt * 1000).toLocaleDateString(currentLang === 'zh' ? 'zh-CN' : 'en-US');
       if (!dailyData[date]) {
         dailyData[date] = item;
       } else {
@@ -110,7 +114,7 @@ async function fetchForecast(city = null, coords = null) {
       const temp = Math.round(item.main.temp);
       const condition = item.weather[0].main.toLowerCase();
       const icon = getWeatherEmoji(condition);
-      const dayName = new Date(item.dt * 1000).toLocaleDateString(undefined, { weekday: 'short' });
+      const dayName = new Date(item.dt * 1000).toLocaleDateString(currentLang === 'zh' ? 'zh-CN' : 'en-US', { weekday: 'short' });
 
       const el = document.createElement("div");
       el.className = "forecast-item";
@@ -151,7 +155,7 @@ async function fetchWeather(city = null, coords = null) {
     const temp = data.main?.temp;
     const desc = data.weather?.[0]?.description ?? "--";
     const feels = data.main?.feels_like;
-    const wind = data.wind?.speed;
+    const wind = data.wind?.speed || 0;
     const rain = data.rain?.["1h"] || 0;
     const fetchedCity = data.name || queryCity;
 

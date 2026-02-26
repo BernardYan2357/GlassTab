@@ -25,6 +25,18 @@ function initTimeFormat() {
   setTimeFormat(savedFormat);
 }
 
+function initLanguageToggle() {
+  const savedLang = localStorage.getItem('language') || (navigator.language.startsWith('zh') ? 'zh' : 'en');
+  const options = document.getElementById('languageToggle').querySelectorAll('.toggle-option');
+  options.forEach(opt => {
+    if (opt.dataset.lang === savedLang) {
+      opt.classList.add('active');
+    } else {
+      opt.classList.remove('active');
+    }
+  });
+}
+
 function updateChangeWallpaperButtonState() {
   if (currentWallpaperSource === 'bing') {
     changeWallpaperBtn.disabled = true;

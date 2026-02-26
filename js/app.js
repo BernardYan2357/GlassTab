@@ -12,7 +12,12 @@
 })();
 
 // 初始化各模块
+try {
+  if (typeof updateUI === 'function') updateUI();
+} catch (e) { console.error(e); }
+
 initTimeFormat();
+initLanguageToggle();
 initWallpaperSource();
 initWeatherToggle();
 
@@ -64,7 +69,7 @@ document.getElementById('removeImageBtn').addEventListener('click', () => {
   pastedImageFile = null;
   document.getElementById('imagePreviewContainer').style.display = 'none';
   document.getElementById('imagePreview').src = '';
-  searchInput.placeholder = "Search, text and image";
+  searchInput.placeholder = t("search.placeholder");
   // 恢复默认搜索引擎
   const savedEngine = localStorage.getItem('defaultSearchEngine') || 'Bing';
   setEngineByName(savedEngine);
@@ -82,16 +87,16 @@ searchForm.addEventListener("submit", async (event) => {
 
     if (isImgbbAvailable() && imgEngine && imgEngine.supportsUrlSearch) {
       // ---- 有 imgbb：上传获取公网 URL，用 URL 搜索 ----
-      searchInput.placeholder = "Uploading image...";
+      searchInput.placeholder = t("app.uploading");
       searchInput.disabled = true;
 
       const imageUrl = await uploadImageToImgbb(pastedImageFile);
 
       searchInput.disabled = false;
-      searchInput.placeholder = "Search, text and image";
+      searchInput.placeholder = t("search.placeholder");
 
       if (!imageUrl) {
-        alert("Image upload failed, please try again.");
+        alert(t("app.uploadFailed"));
         return;
       }
 
@@ -162,6 +167,23 @@ timeFormatToggle.addEventListener("click", (event) => {
   const option = event.target.closest('.toggle-option');
   if (option) {
     setTimeFormat(option.dataset.format);
+  }
+});
+
+document.getElementById('languageToggle').addEventListener("click", (event) => {
+  event.stopPropagation();
+  const option = event.target.closest('.toggle-option');
+  if (option) {
+    const lang = option.dataset.lang;
+    setLanguage(lang);
+    const options = document.getElementById('languageToggle').querySelectorAll('.toggle-option');
+    options.forEach(opt => {
+      if (opt.dataset.lang === lang) {
+        opt.classList.add('active');
+      } else {
+        opt.classList.remove('active');
+      }
+    });
   }
 });
 

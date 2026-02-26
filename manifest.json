@@ -1,7 +1,7 @@
 ﻿{
   "manifest_version": 3,
   "name": "GlassTab",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A beautiful new tab with frosted glass design, featuring weather, search (text and image), and daily wallpapers.",
   "permissions": [
     "geolocation"

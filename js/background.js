@@ -213,7 +213,7 @@ async function manualChangeWallpaper() {
         document.querySelector('.bg').style.backgroundImage = `url("${result.url}")`;
         updatePhotoCredit(result.credit);
       } else {
-        alert('Failed to load new wallpaper. Please try again later.');
+        alert(t("app.uploadFailed"));
       }
     }
   } finally {
@@ -227,12 +227,12 @@ async function downloadWallpaper() {
     const bgElement = document.querySelector('.bg');
     const bgImageUrl = bgElement.style.backgroundImage;
     if (!bgImageUrl || bgImageUrl === 'none') {
-      alert('No wallpaper to download. Please wait for the wallpaper to load.');
+      alert(t("bg.noWallpaper"));
       return;
     }
     const urlMatch = bgImageUrl.match(/url\(["']?([^"'()]+)["']?\)/);
     if (!urlMatch || !urlMatch[1]) {
-      alert('Unable to extract wallpaper URL.');
+      alert(t("bg.extractFailed"));
       return;
     }
     const imageUrl = urlMatch[1];
@@ -252,6 +252,6 @@ async function downloadWallpaper() {
     toggleSettings();
   } catch (error) {
     console.error('Download error:', error);
-    alert('Failed to download wallpaper. Please try again later.');
+    alert(t("bg.downloadFailed"));
   }
 }
