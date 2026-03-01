@@ -5,7 +5,7 @@
   
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://chrome.google.com/webstore)
 [![CC BY-NC 4.0](https://img.shields.io/badge/CC%20BY--NC%204.0-lightgrey?style=for-the-badge&logo=creativecommons)](https://creativecommons.org/licenses/by-nc/4.0/)
-[![Version](https://img.shields.io/badge/Version-1.2.0-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
+[![Version](https://img.shields.io/badge/Version-1.2.1-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
 </div>
 
 ![GlassTab Preview](image/display.png)

@@ -11,7 +11,16 @@ function setEngine(index) {
 }
 
 function cycleEngine() {
-  setEngine(currentEngine + 1);
+  if (pastedImageFile) {
+    const imageEngineNames = getImageEngineNames();
+    const currentEngineIndex = imageEngineNames.findIndex(name => CONFIG.engines[currentEngine].name === name);
+    const nextIndex = (currentEngineIndex + 1) % imageEngineNames.length;
+    const nextEngineName = imageEngineNames[nextIndex];
+    setEngineByName(nextEngineName);
+    currentImageEngine = nextEngineName;
+  } else {
+    setEngine(currentEngine + 1);
+  }
 }
 
 function setEngineByName(name) {
