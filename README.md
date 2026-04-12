@@ -1,16 +1,17 @@
-# <img src="image/icon.png" alt="GlassTab" style="width: 32px; height: 32px;"> GlassTab
-
 <div align="center">
+
+# <img src="image/icon.png" alt="GlassTab" style="width: 24px; height: 24px;"> GlassTab
+
 极简的 Chrome 新标签页扩展
   
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://chrome.google.com/webstore)
 [![CC BY-NC 4.0](https://img.shields.io/badge/CC%20BY--NC%204.0-lightgrey?style=for-the-badge&logo=creativecommons)](https://creativecommons.org/licenses/by-nc/4.0/)
-[![Version](https://img.shields.io/badge/Version-1.2.1-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
+[![Version](https://img.shields.io/badge/Version-1.2.2-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
+[![English README](https://img.shields.io/badge/English-README-2ea44f?style=for-the-badge)](README_en.md)
+
 </div>
 
 ![GlassTab Preview](image/display.png)
-
-English version: [README_en.md](README_en.md)
 
 ## 简介
 
@@ -35,6 +36,7 @@ GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的�
 ### 每日壁纸
 
 支持三个壁纸源：
+
 - **Pexels**（默认）— 按风景、自然、建筑等分类随机获取高质量摄影作品，左下角显示摄影师署名
 - **Bing** — 每日必应壁纸
 - **Picsum** — 随机图片
@@ -48,6 +50,7 @@ GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的�
 ### 设置面板
 
 点击左下角设置按钮，可配置：
+
 - **双语支持** — 中文 / 英文
 - **时间格式** — 24 小时制 / 12 小时制
 - **天气** — 开启 / 关闭

@@ -1,16 +1,17 @@
-# <img src="image/icon.png" alt="GlassTab" style="width: 32px; height: 32px;"> GlassTab
-
 <div align="center">
+
+# <img src="image/icon.png" alt="GlassTab" style="width: 24px; height: 24px;"> GlassTab
+
 A minimal Chrome new tab extension
   
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://chrome.google.com/webstore)
 [![CC BY-NC 4.0](https://img.shields.io/badge/CC%20BY--NC%204.0-lightgrey?style=for-the-badge&logo=creativecommons)](https://creativecommons.org/licenses/by-nc/4.0/)
-[![Version](https://img.shields.io/badge/Version-1.2.1-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
+[![Version](https://img.shields.io/badge/Version-1.2.2-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
+[![中文说明](https://img.shields.io/badge/Chinese-README-E34F26?style=for-the-badge)](README.md)
+
 </div>
 
 ![GlassTab Preview](image/display.png)
-
-Chinese version: [README.md](README.md)
 
 ## About
 
