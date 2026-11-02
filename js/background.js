@@ -2,6 +2,91 @@
 // background.js — 壁纸管理（获取、缓存、切换、下载、credit）
 // ============================================================
 
+const LOCAL_WALLPAPER_DB_NAME = 'GlassTabWallpaper';
+const LOCAL_WALLPAPER_STORE_NAME = 'wallpapers';
+const LOCAL_WALLPAPER_RECORD_ID = 'current';
+
+function openLocalWallpaperDatabase() {
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) {
+      reject(new Error('IndexedDB is not available'));
+      return;
+    }
+
+    const request = indexedDB.open(LOCAL_WALLPAPER_DB_NAME, 1);
+
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(LOCAL_WALLPAPER_STORE_NAME)) {
+        db.createObjectStore(LOCAL_WALLPAPER_STORE_NAME, { keyPath: 'id' });
+      }
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error('Failed to open local wallpaper database'));
+  });
+}
+
+async function saveLocalWallpaperToStorage(file) {
+  const db = await openLocalWallpaperDatabase();
+
+  try {
+    await new Promise((resolve, reject) => {
+      const transaction = db.transaction(LOCAL_WALLPAPER_STORE_NAME, 'readwrite');
+      const store = transaction.objectStore(LOCAL_WALLPAPER_STORE_NAME);
+      store.put({
+        id: LOCAL_WALLPAPER_RECORD_ID,
+        blob: file,
+        name: file.name || 'wallpaper',
+        type: file.type || 'image/*',
+        updatedAt: Date.now()
+      });
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error || new Error('Failed to store local wallpaper'));
+      transaction.onabort = () => reject(transaction.error || new Error('Failed to store local wallpaper'));
+    });
+  } finally {
+    db.close();
+  }
+}
+
+async function getLocalWallpaperFromStorage() {
+  const db = await openLocalWallpaperDatabase();
+
+  try {
+    return await new Promise((resolve, reject) => {
+      const transaction = db.transaction(LOCAL_WALLPAPER_STORE_NAME, 'readonly');
+      const store = transaction.objectStore(LOCAL_WALLPAPER_STORE_NAME);
+      const request = store.get(LOCAL_WALLPAPER_RECORD_ID);
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error || new Error('Failed to read local wallpaper'));
+      transaction.onerror = () => reject(transaction.error || new Error('Failed to read local wallpaper'));
+    });
+  } finally {
+    db.close();
+  }
+}
+
+function revokeCurrentLocalWallpaperUrl() {
+  if (currentLocalWallpaperObjectUrl) {
+    URL.revokeObjectURL(currentLocalWallpaperObjectUrl);
+    currentLocalWallpaperObjectUrl = null;
+  }
+}
+
+async function getCurrentLocalWallpaperUrl() {
+  const record = await getLocalWallpaperFromStorage();
+
+  if (!record || !record.blob) {
+    revokeCurrentLocalWallpaperUrl();
+    return null;
+  }
+
+  revokeCurrentLocalWallpaperUrl();
+  currentLocalWallpaperObjectUrl = URL.createObjectURL(record.blob);
+  return currentLocalWallpaperObjectUrl;
+}
+
 function getTodayDateString() {
   const today = new Date();
   return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
@@ -165,6 +250,29 @@ function testImageLoad(url) {
 async function updateDailyBackground() {
   const bgElement = document.querySelector('.bg');
 
+  if (currentWallpaperSource === 'local') {
+    try {
+      const localUrl = await getCurrentLocalWallpaperUrl();
+      if (!localUrl) {
+        console.warn('No local wallpaper stored');
+        updatePhotoCredit(null);
+        return;
+      }
+
+      const loaded = await testImageLoad(localUrl);
+      if (loaded) {
+        bgElement.style.backgroundImage = `url("${localUrl}")`;
+      } else {
+        console.warn('Failed to load local wallpaper image, keeping default');
+      }
+    } catch (error) {
+      console.warn('Error loading local wallpaper, keeping default:', error);
+    }
+
+    updatePhotoCredit(null);
+    return;
+  }
+
   // 检查缓存
   let backgroundUrl = getBackgroundFromStorage();
   let credit = getCreditFromStorage();
@@ -198,7 +306,7 @@ async function updateDailyBackground() {
 }
 
 async function manualChangeWallpaper() {
-  if (currentWallpaperSource === 'bing') return;
+  if (currentWallpaperSource === 'bing' || currentWallpaperSource === 'local') return;
 
   // 防止重复点击
   if (isChangingWallpaper) return;

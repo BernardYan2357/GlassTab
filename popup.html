@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GlassTab API Keys</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <main class="popup-shell">
+    <h1 class="popup-title" data-i18n="popup.title">API Keys</h1>
+
+    <form id="apiKeyForm">
+      <label class="field">
+        <span class="label" data-i18n="popup.weatherKey">OpenWeatherMap</span>
+        <input id="weatherKeyInput" type="password" autocomplete="off" spellcheck="false" placeholder="" />
+      </label>
+
+      <label class="field">
+        <span class="label" data-i18n="popup.pexelsKey">Pexels</span>
+        <input id="pexelsKeyInput" type="password" autocomplete="off" spellcheck="false" placeholder="" />
+      </label>
+
+      <label class="field">
+        <span class="label" data-i18n="popup.imgbbKey">imgbb</span>
+        <input id="imgbbKeyInput" type="password" autocomplete="off" spellcheck="false" placeholder="" />
+      </label>
+
+      <div class="actions">
+        <button type="submit" class="primary" data-i18n="popup.save">Save</button>
+        <button type="button" class="secondary" id="resetBtn" data-i18n="popup.reset">Reset</button>
+      </div>
+
+      <div id="status" class="status" aria-live="polite"></div>
+    </form>
+  </main>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/api-config.js"></script>
+  <script src="js/popup.js"></script>
+</body>
+</html>

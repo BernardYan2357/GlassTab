@@ -23,14 +23,20 @@ $ZipPath = Join-Path $OutputDir $ZipFileName
 $IncludePatterns = @(
     "assets",
     "js",
-    "config.example.js",
     "index.html",
     "manifest.json",
+    "popup.html",
+    "popup.css",
     "style.css"
 )
 
 # Create temporary directory for staging
-$TempDir = Join-Path $env:TEMP "$PackageName_temp_$Timestamp"
+$TempDir = Join-Path $env:TEMP "${PackageName}_temp_$Timestamp"
+$TempRoot = [System.IO.Path]::GetFullPath($env:TEMP).TrimEnd([System.IO.Path]::DirectorySeparatorChar)
+$TempDir = [System.IO.Path]::GetFullPath($TempDir)
+if (-not $TempDir.StartsWith("$TempRoot$([System.IO.Path]::DirectorySeparatorChar)", [System.StringComparison]::OrdinalIgnoreCase)) {
+    throw "Staging directory must be inside the temporary directory: $TempDir"
+}
 New-Item -ItemType Directory -Path $TempDir | Out-Null
 Write-Host "Staging files to: $TempDir"
 

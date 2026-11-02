@@ -40,7 +40,10 @@ function initLanguageToggle() {
 function updateChangeWallpaperButtonState() {
   if (currentWallpaperSource === 'bing') {
     changeWallpaperBtn.disabled = true;
-    changeWallpaperBtn.title = "Bing wallpaper changes daily";
+    changeWallpaperBtn.title = t("settings.changeWallpaper.bing");
+  } else if (currentWallpaperSource === 'local') {
+    changeWallpaperBtn.disabled = true;
+    changeWallpaperBtn.title = t("settings.changeWallpaper.local");
   } else {
     changeWallpaperBtn.disabled = false;
     changeWallpaperBtn.title = "";
@@ -48,6 +51,10 @@ function updateChangeWallpaperButtonState() {
 }
 
 function setWallpaperSource(source) {
+  if (source !== 'local' && typeof revokeCurrentLocalWallpaperUrl === 'function') {
+    revokeCurrentLocalWallpaperUrl();
+  }
+
   currentWallpaperSource = source;
   localStorage.setItem('wallpaperSource', source);
   const options = wallpaperSourceToggle.querySelectorAll('.toggle-option');
@@ -62,6 +69,23 @@ function setWallpaperSource(source) {
   updateChangeWallpaperButtonState();
   localStorage.removeItem('dailyBackground');
   updateDailyBackground();
+}
+
+async function importLocalWallpaper(file) {
+  if (!file) return;
+
+  if (!file.type || !file.type.startsWith('image/')) {
+    alert(t('bg.invalidImage'));
+    return;
+  }
+
+  try {
+    await saveLocalWallpaperToStorage(file);
+    setWallpaperSource('local');
+  } catch (error) {
+    console.error('Failed to import local wallpaper:', error);
+    alert(t('bg.importFailed'));
+  }
 }
 
 function initWallpaperSource() {

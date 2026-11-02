@@ -39,6 +39,7 @@ Three wallpaper sources to choose from:
 - **Pexels** (default) — High-quality photos in categories like landscape, nature, and architecture, with photographer credit displayed in the bottom-left corner
 - **Bing** — Bing's daily wallpaper
 - **Picsum** — Random images
+- **Local** — Import an image from your computer and keep it as the current wallpaper
 
 Supports manual refresh and wallpaper download.
 
@@ -54,7 +55,7 @@ Click the settings gear icon in the bottom-left corner to configure:
 - **Weather** — On / Off
 - **Default Search Engine** — Bing / Google / DuckDuckGo / Yandex (shown as icons)
 - **Default Image Search Engine** — Google / Yandex / TinEye (shown as icons; selecting Yandex or TinEye without imgbb key will show a reminder)
-- **Wallpaper Source** — Picsum / Bing / Pexels
+- **Wallpaper Source** — Picsum / Bing / Pexels / Local
 - **Change Wallpaper** — Refresh with a random wallpaper (Bing's is fixed daily)
 - **Download** — Save current wallpaper to disk
 
@@ -64,13 +65,13 @@ Click the settings gear icon in the bottom-left corner to configure:
 2. Open Chrome and navigate to `chrome://extensions/`;
 3. Enable "Developer mode" in the top-right corner;
 4. Click "Load unpacked" and select the project folder;
-5. (Optional) Configure API keys, see below;
+5. Click the extension icon and configure API keys in the popup;
 6. Enjoy your new tab page!
 
 ## Configuration
 
-1. Copy `config.example.js` in the `GlassTab` directory to `config.js`
-2. Fill in your API keys:
+1. Click the GlassTab icon in the browser toolbar to open the API key popup;
+2. Fill in your API keys and save:
 
 | Key | Description | Get it from | Required? |
 |-----|----------|-------------|-------------|

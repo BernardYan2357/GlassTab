@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap");
+
+:root {
+  --accent: #9b83cf;
+  --accent-strong: #7155a3;
+  --accent-gradient: linear-gradient(135deg, #edc6eb 0%, #c4b1ef 48%, #95b4ed 100%);
+  --danger: #d94b5d;
+  --text: #302a40;
+  --text-muted: rgba(48, 42, 64, 0.66);
+  --border: rgba(155, 131, 207, 0.24);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-width: 340px;
+  min-height: 100%;
+}
+
+html {
+  background: transparent;
+}
+
+body {
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  color: var(--text);
+  background: linear-gradient(145deg, #fcf8fe 0%, #f8f6ff 48%, #f1f6fe 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.popup-shell {
+  padding: 10px;
+}
+
+.popup-title {
+  margin: 6px 0 10px;
+  padding: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+
+.label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.field input {
+  width: 100%;
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 0 0 4px rgba(155, 131, 207, 0.16);
+}
+
+.actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.actions button {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.actions button:hover {
+  transform: translateY(-1px);
+}
+
+.primary {
+  color: var(--text);
+  background: var(--accent-gradient);
+  box-shadow: 0 4px 12px rgba(155, 131, 207, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.48);
+}
+
+.secondary {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid var(--border) !important;
+  backdrop-filter: blur(10px);
+}
+
+.status {
+  position: relative;
+  z-index: 1;
+  min-height: 20px;
+  margin: 4px 0 0;
+  color: var(--accent-strong);
+  font-size: 12px;
+}
+
+.status.error {
+  color: var(--danger);
+}
+
+::selection {
+  background: rgba(155, 131, 207, 0.2);
+}

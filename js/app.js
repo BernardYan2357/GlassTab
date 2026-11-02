@@ -2,38 +2,43 @@
 // app.js — 初始化 + 事件绑定
 // ============================================================
 
-// 初始化壁纸
-(async () => {
+async function bootstrapApp() {
+  if (window.GlassTabApiConfig && typeof window.GlassTabApiConfig.loadApiKeys === 'function') {
+    try {
+      await window.GlassTabApiConfig.loadApiKeys({ emitChange: false });
+    } catch (error) {
+      console.warn('API config load failed, continuing with empty keys:', error);
+    }
+  }
+
+  try {
+    if (typeof updateUI === 'function') updateUI();
+  } catch (e) { console.error(e); }
+
+  initTimeFormat();
+  initLanguageToggle();
+  initWallpaperSource();
+  initWeatherToggle();
+
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  initDefaultSearchEngine();
+  initDefaultImageEngine();
+
   try {
     await updateDailyBackground();
   } catch (error) {
     console.warn('Background update error, using default:', error);
   }
-})();
 
-// 初始化各模块
-try {
-  if (typeof updateUI === 'function') updateUI();
-} catch (e) { console.error(e); }
-
-initTimeFormat();
-initLanguageToggle();
-initWallpaperSource();
-initWeatherToggle();
-
-// 时钟
-updateClock();
-setInterval(updateClock, 1000);
-
-// 搜索引擎 & 图搜引擎
-initDefaultSearchEngine();
-initDefaultImageEngine();
-
-// 天气定时刷新
-if (localStorage.getItem('weatherEnabled') !== 'off') {
-  getGeolocation();
-  setInterval(() => fetchWeather(null, currentCoords), 1000 * 60 * 10);
+  if (localStorage.getItem('weatherEnabled') !== 'off') {
+    getGeolocation();
+    setInterval(() => fetchWeather(null, currentCoords), 1000 * 60 * 10);
+  }
 }
+
+bootstrapApp();
 
 // ---- 事件绑定 ----
 
@@ -156,6 +161,18 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+window.addEventListener('api-keys-changed', async () => {
+  try {
+    await updateDailyBackground();
+  } catch (error) {
+    console.warn('Failed to refresh background after API key update:', error);
+  }
+
+  if (localStorage.getItem('weatherEnabled') !== 'off') {
+    fetchWeather(null, currentCoords);
+  }
+});
+
 // 设置面板
 settingsBtn.addEventListener("click", (event) => {
   event.stopPropagation();
@@ -222,6 +239,19 @@ document.getElementById('weatherToggle').addEventListener("click", (event) => {
 changeWallpaperBtn.addEventListener("click", (event) => {
   event.stopPropagation();
   manualChangeWallpaper();
+});
+
+importWallpaperBtn.addEventListener("click", (event) => {
+  event.stopPropagation();
+  localWallpaperInput.click();
+});
+
+localWallpaperInput.addEventListener('change', async (event) => {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  await importLocalWallpaper(file);
+  event.target.value = '';
 });
 
 downloadWallpaperBtn.addEventListener("click", (event) => {

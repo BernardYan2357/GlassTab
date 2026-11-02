@@ -161,6 +161,8 @@ body {
   width: 20px;
   height: 20px;
   object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12));
 }
 
 .modal {
@@ -422,6 +424,7 @@ body {
   position: absolute;
   bottom: 54px;
   left: 0;
+  width: max-content;
   min-width: 280px;
   padding: 12px;
   border-radius: 16px;
@@ -434,18 +437,22 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding: 10px 12px;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.05);
 }
 
 .settings-label {
+  flex-shrink: 0;
   font-size: 14px;
   color: var(--text);
+  white-space: nowrap;
 }
 
 .settings-toggle {
   display: flex;
+  align-items: center;
   gap: 4px;
   padding: 3px;
   background: rgba(0, 0, 0, 0.2);
@@ -455,12 +462,18 @@ body {
 }
 
 .toggle-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
   padding: 4px 12px;
   font-size: 13px;
+  line-height: 20px;
   color: var(--muted);
   border-radius: 6px;
   transition: all 0.2s ease;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .toggle-option.active {
@@ -473,6 +486,14 @@ body {
   height: 16px;
   object-fit: contain;
   display: block;
+  opacity: 0.72;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12));
+  transition: opacity 0.2s ease;
+}
+
+.toggle-option.active .toggle-icon,
+.toggle-option:hover .toggle-icon {
+  opacity: 1;
 }
 
 .settings-action {
