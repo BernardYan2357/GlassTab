@@ -5,6 +5,7 @@
 const LOCAL_WALLPAPER_DB_NAME = 'GlassTabWallpaper';
 const LOCAL_WALLPAPER_STORE_NAME = 'wallpapers';
 const LOCAL_WALLPAPER_RECORD_ID = 'current';
+const BING_ORIGIN = 'https://www.bing.com';
 
 function openLocalWallpaperDatabase() {
   return new Promise((resolve, reject) => {
@@ -124,6 +125,20 @@ function getCreditFromStorage() {
   }
 }
 
+function resolveBingCreditUrl(link) {
+  try {
+    const path = (link || '').trim()
+      // 兼容旧缓存中重复拼接了必应域名的链接。
+      .replace(/^https:\/\/www\.bing\.com(?=https?:?\/\/)/i, '')
+      .replace(/^(https?)\/\//i, '$1://');
+    const url = new URL(path, BING_ORIGIN);
+    if (url.protocol === 'https:' || url.protocol === 'http:') return url.href;
+  } catch {
+    // 无法解析时跳转到必应首页。
+  }
+  return BING_ORIGIN;
+}
+
 function updatePhotoCredit(credit) {
   const creditEl = document.getElementById('photoCredit');
   const creditText = document.getElementById('photoCreditText');
@@ -136,7 +151,9 @@ function updatePhotoCredit(credit) {
   }
 
   creditText.textContent = credit.photographer;
-  creditLink.href = credit.photographerUrl || '#';
+  creditLink.href = credit.source === 'Bing'
+    ? resolveBingCreditUrl(credit.photographerUrl)
+    : credit.photographerUrl || '#';
   creditSourceLink.textContent = credit.source || 'Pexels';
   creditSourceLink.href = credit.sourceUrl || 'https://www.pexels.com';
   creditEl.style.display = 'flex';
@@ -176,17 +193,17 @@ async function fetchBackground(useRandom = false) {
     const seed = useRandom ? Date.now() : getTodayDateString();
 
     if (source === "bing") {
-      const response = await fetch('https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US');
+      const response = await fetch(`${BING_ORIGIN}/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US`);
       if (!response.ok) throw new Error('Bing API error');
       const data = await response.json();
       if (data.images && data.images.length > 0) {
         return {
-          url: `https://www.bing.com${data.images[0].url}`,
+          url: `${BING_ORIGIN}${data.images[0].url}`,
           credit: {
             photographer: data.images[0].copyright || 'Bing',
-            photographerUrl: `https://www.bing.com${data.images[0].copyrightlink || ''}`,
+            photographerUrl: resolveBingCreditUrl(data.images[0].copyrightlink),
             source: 'Bing',
-            sourceUrl: 'https://www.bing.com'
+            sourceUrl: BING_ORIGIN
           }
         };
       }
