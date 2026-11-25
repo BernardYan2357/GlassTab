@@ -3,8 +3,6 @@
 // ============================================================
 
 const CONFIG = window.GlassTabConfig = Object.assign({
-  weatherApiKey: "",
-  units: "metric",
   defaultBackground: "assets/default_background.jpg",
   imgbbApiKey: "",
   pexelsApiKey: "",
@@ -50,17 +48,6 @@ const searchInput = document.getElementById("searchInput");
 const engineBtn = document.getElementById("engineBtn");
 const engineBadge = document.getElementById("engineBadge");
 
-const weatherChip = document.getElementById("weatherChip");
-const weatherIcon = document.getElementById("weatherIcon");
-const weatherTemp = document.getElementById("weatherTemp");
-const weatherCity = document.getElementById("weatherCity");
-const weatherModal = document.getElementById("weatherModal");
-const weatherDesc = document.getElementById("weatherDesc");
-const weatherBig = document.getElementById("weatherBig");
-const weatherNote = document.getElementById("weatherNote");
-const weatherCityName = document.getElementById("weatherCityName");
-const inlineCityInput = document.getElementById("inlineCityInput");
-const closeModal = document.getElementById("closeModal");
 const settingsBtn = document.getElementById("settingsBtn");
 const settingsMenu = document.getElementById("settingsMenu");
 const timeFormatToggle = document.getElementById("timeFormatToggle");
@@ -76,8 +63,6 @@ const imageEngineToggle = document.getElementById('imageEngineToggle');
 // 共享状态
 let currentEngine = 0;
 let currentImageEngine = 'Google'; // 默认图搜引擎名
-let currentCity = "Suzhou";
-let currentCoords = null;
 let currentWallpaperSource = localStorage.getItem('wallpaperSource') || 'pexels';
 let currentLocalWallpaperObjectUrl = null;
 let pastedImageFile = null;

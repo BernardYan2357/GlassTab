@@ -18,7 +18,6 @@ async function bootstrapApp() {
   initTimeFormat();
   initLanguageToggle();
   initWallpaperSource();
-  initWeatherToggle();
 
   updateClock();
   setInterval(updateClock, 1000);
@@ -30,11 +29,6 @@ async function bootstrapApp() {
     await updateDailyBackground();
   } catch (error) {
     console.warn('Background update error, using default:', error);
-  }
-
-  if (localStorage.getItem('weatherEnabled') !== 'off') {
-    getGeolocation();
-    setInterval(() => fetchWeather(null, currentCoords), 1000 * 60 * 10);
   }
 }
 
@@ -130,33 +124,11 @@ searchForm.addEventListener("submit", async (event) => {
   }
 });
 
-// 天气模态框
-weatherChip.addEventListener("click", showModal);
-closeModal.addEventListener("click", hideModal);
-weatherModal.addEventListener("click", (event) => {
-  if (event.target === weatherModal) {
-    hideModal();
-  }
-});
-
-// 城市输入
-weatherCityName.addEventListener("click", showCityInput);
-inlineCityInput.addEventListener("blur", hideCityInput);
-inlineCityInput.addEventListener("keypress", (event) => {
-  if (event.key === "Enter") {
-    updateCityFromInput();
-  }
-});
-
 // ESC 键关闭
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    hideModal();
     if (settingsMenu.style.display !== 'none') {
       toggleSettings();
-    }
-    if (inlineCityInput.style.display !== 'none') {
-      hideCityInput();
     }
   }
 });
@@ -166,10 +138,6 @@ window.addEventListener('api-keys-changed', async () => {
     await updateDailyBackground();
   } catch (error) {
     console.warn('Failed to refresh background after API key update:', error);
-  }
-
-  if (localStorage.getItem('weatherEnabled') !== 'off') {
-    fetchWeather(null, currentCoords);
   }
 });
 
@@ -225,14 +193,6 @@ imageEngineToggle.addEventListener("click", (event) => {
   const option = event.target.closest('.toggle-option');
   if (option) {
     setDefaultImageEngine(option.dataset.imgengine);
-  }
-});
-
-document.getElementById('weatherToggle').addEventListener("click", (event) => {
-  event.stopPropagation();
-  const option = event.target.closest('.toggle-option');
-  if (option) {
-    setWeatherEnabled(option.dataset.weather === 'on');
   }
 });
 

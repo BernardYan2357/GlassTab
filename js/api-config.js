@@ -5,7 +5,6 @@
 (function () {
   const STORAGE_KEY = 'glassTabApiKeys';
   const DEFAULT_KEYS = {
-    openWeatherMap: '',
     pexels: '',
     imgbb: ''
   };
@@ -17,7 +16,6 @@
   function getConfigObject() {
     if (!window.GlassTabConfig) {
       window.GlassTabConfig = {
-        weatherApiKey: '',
         pexelsApiKey: '',
         imgbbApiKey: ''
       };
@@ -27,7 +25,6 @@
 
   function normalizeApiKeys(input = {}) {
     return {
-      openWeatherMap: input.openWeatherMap || '',
       pexels: input.pexels || '',
       imgbb: input.imgbb || ''
     };
@@ -37,7 +34,6 @@
     const config = getConfigObject();
     const normalized = normalizeApiKeys(apiKeys);
 
-    config.weatherApiKey = normalized.openWeatherMap;
     config.pexelsApiKey = normalized.pexels;
     config.imgbbApiKey = normalized.imgbb;
 
@@ -118,7 +114,6 @@
 
   function getCurrentApiKeys() {
     return applyApiKeys({
-      openWeatherMap: getConfigObject().weatherApiKey,
       pexels: getConfigObject().pexelsApiKey,
       imgbb: getConfigObject().imgbbApiKey
     });

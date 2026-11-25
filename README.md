@@ -6,7 +6,7 @@
   
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://chrome.google.com/webstore)
 [![CC BY-NC 4.0](https://img.shields.io/badge/CC%20BY--NC%204.0-lightgrey?style=for-the-badge&logo=creativecommons)](https://creativecommons.org/licenses/by-nc/4.0/)
-[![Version](https://img.shields.io/badge/Version-1.2.2-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
+[![Version](https://img.shields.io/badge/Version-1.4.0-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
 [![English README](https://img.shields.io/badge/English-README-2ea44f?style=for-the-badge)](README_en.md)
 
 </div>
@@ -15,7 +15,7 @@
 
 ## 简介
 
-GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的元素与臃肿的功能，只保留时间、搜索和天气，干净、清爽。
+GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的元素与臃肿的功能，只保留时间显示、搜索和壁纸切换功能，干净、清爽。
 
 ## 功能
 
@@ -44,17 +44,12 @@ GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的�
 
 支持手动换壁纸、下载当前壁纸。
 
-### 天气信息
-
-基于地理定位自动获取当前天气，点击可展开查看体感温度、降雨量、风速及未来 5 天预报。支持手动切换城市。可在设置中关闭天气显示。
-
 ### 设置面板
 
 点击左下角设置按钮，可配置：
 
 - **双语支持** — 中文 / 英文
 - **时间格式** — 24 小时制 / 12 小时制
-- **天气** — 开启 / 关闭
 - **默认搜索引擎** — Bing / Google / DuckDuckGo / Yandex
 - **默认图搜引擎** — Google / Yandex / TinEye
 - **壁纸来源** — Picsum / Bing / Pexels / 本地
@@ -77,14 +72,12 @@ GlassTab 用毛玻璃风格重新定义了 Edge 新标签页。没有多余的�
 
 | 配置项 | 说明 | 申请地址 | 是否必填 |
 |-----|-----|-----| ------|
-| `openWeatherMap` | OpenWeatherMap API Key | [openweathermap.org](https://openweathermap.org/api) | 可以不配置，天气显示可以在设置中关闭 | 
 | `pexels` | Pexels API Key | [pexels.com/api](https://www.pexels.com/api/) | 可以不配置，未配置时将使用默认的背景，设置中选择其它源以获得每日壁纸功能 |
 | `imgbb` | imgbb 图床 API Key（以图搜图） | [api.imgbb.com](https://api.imgbb.com/) | 可以不配置，未配置时以图搜图功能将默认使用谷歌图片搜索，此时若选择 yandex 或 Tineye，将自动跳转至对应网站进行手动上传 |
 
 ## 致谢
 
 - 壁纸来自 [Pexels](https://www.pexels.com)、[Bing](https://www.bing.com)、[Lorem Picsum](https://picsum.photos)。
-- 天气数据来自 [OpenWeatherMap](https://openweathermap.org)。
 - 以图搜图由 [imgbb](https://imgbb.com) 提供图片托管。
 
 ## 许可

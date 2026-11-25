@@ -6,7 +6,7 @@ A minimal Chrome new tab extension
   
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://chrome.google.com/webstore)
 [![CC BY-NC 4.0](https://img.shields.io/badge/CC%20BY--NC%204.0-lightgrey?style=for-the-badge&logo=creativecommons)](https://creativecommons.org/licenses/by-nc/4.0/)
-[![Version](https://img.shields.io/badge/Version-1.2.2-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
+[![Version](https://img.shields.io/badge/Version-1.4.0-blue.svg?style=for-the-badge)](https://github.com/BernardYan2357/GlassTab/releases)
 [![中文说明](https://img.shields.io/badge/Chinese-README-E34F26?style=for-the-badge)](README.md)
 
 </div>
@@ -15,7 +15,7 @@ A minimal Chrome new tab extension
 
 ## About
 
-GlassTab redefines Edge new tab page with a frosted glass aesthetic. No clutter, no bloat — just time, search, and weather. Clean, calm.
+GlassTab redefines Edge new tab page with a frosted glass aesthetic. No clutter, no bloat — just time, search, and wallpapers. Clean, calm.
 
 ## Features
 
@@ -43,16 +43,11 @@ Three wallpaper sources to choose from:
 
 Supports manual refresh and wallpaper download.
 
-### Weather
-
-Automatically fetches current weather based on geolocation. Click to expand and view feels-like temperature, rainfall, wind speed, and a 5-day forecast. Manual city switching is supported. Weather display can be toggled in Settings.
-
 ### Settings Panel
 
 Click the settings gear icon in the bottom-left corner to configure:
 - **Bilingual Support** — Chinese / English
 - **Time Format** — 24-hour / 12-hour
-- **Weather** — On / Off
 - **Default Search Engine** — Bing / Google / DuckDuckGo / Yandex (shown as icons)
 - **Default Image Search Engine** — Google / Yandex / TinEye (shown as icons; selecting Yandex or TinEye without imgbb key will show a reminder)
 - **Wallpaper Source** — Picsum / Bing / Pexels / Local
@@ -75,14 +70,12 @@ Click the settings gear icon in the bottom-left corner to configure:
 
 | Key | Description | Get it from | Required? |
 |-----|----------|-------------|-------------|
-| `openWeatherMap` | OpenWeatherMap API Key. Without it, temperature shows as -- and can be toggled off in Settings | [openweathermap.org](https://openweathermap.org/api) | Optional, can be left blank to disable weather |
 | `pexels` | Pexels API Key. Without it, the default background is used; switch to Bing or Picsum for daily wallpapers | [pexels.com/api](https://www.pexels.com/api/) | Optional, can be left blank to use default background and disable daily wallpapers |
 | `imgbb` | imgbb API Key for image hosting. Without it, reverse image search gracefully degrades: Google → direct form upload; Yandex/TinEye → redirects to their websites for manual upload | [api.imgbb.com](https://api.imgbb.com/) | Optional, if you don't config, use Google for reverse image search and enable manual upload for Yandex/TinEye |
 
 ## Credits
 
 - Wallpapers from [Pexels](https://www.pexels.com), [Bing](https://www.bing.com), and [Lorem Picsum](https://picsum.photos).
-- Weather data from [OpenWeatherMap](https://openweathermap.org).
 - Image hosting for reverse search by [imgbb](https://imgbb.com).
 
 ## License

@@ -2,7 +2,6 @@
 // popup.js — 扩展图标弹窗的 API key 配置
 // ============================================================
 
-const weatherKeyInput = document.getElementById('weatherKeyInput');
 const pexelsKeyInput = document.getElementById('pexelsKeyInput');
 const imgbbKeyInput = document.getElementById('imgbbKeyInput');
 const apiKeyForm = document.getElementById('apiKeyForm');
@@ -16,14 +15,12 @@ function setStatus(message, isError = false) {
 
 function readFormValues() {
   return {
-    openWeatherMap: weatherKeyInput.value.trim(),
     pexels: pexelsKeyInput.value.trim(),
     imgbb: imgbbKeyInput.value.trim()
   };
 }
 
 function populateForm(apiKeys) {
-  weatherKeyInput.value = apiKeys.openWeatherMap || '';
   pexelsKeyInput.value = apiKeys.pexels || '';
   imgbbKeyInput.value = apiKeys.imgbb || '';
 }
